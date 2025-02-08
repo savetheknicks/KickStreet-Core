@@ -1,8 +1,7 @@
 package com.kickstreet.customer;
 
-
 public class CustomerValidator {
-    
+
     public void validate(String name, String email) {
         validateName(name);
         validateEmail(email);

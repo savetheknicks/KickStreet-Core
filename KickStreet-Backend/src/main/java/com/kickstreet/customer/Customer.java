@@ -3,7 +3,7 @@ package com.kickstreet.customer;
 import java.util.UUID;
 
 public class Customer {
-    
+
     private static final CustomerValidator validator = new CustomerValidator();
     private String name;
     private String email;
@@ -34,4 +34,3 @@ public class Customer {
         this.email = customerEmail;
     }
 }
-

@@ -2,8 +2,6 @@ package com.kickstreet.customer;
 
 import org.junit.jupiter.api.Test;
 
-import com.kickstreet.customer.Customer;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
