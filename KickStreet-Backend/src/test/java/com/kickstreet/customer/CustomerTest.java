@@ -49,6 +49,9 @@ public class CustomerTest {
         String currentEmail = customer.getEmail();
         String currentCustomerName = customer.getName();
 
+        assertEquals(customer.getName(), currentCustomerName);
+        assertEquals(customer.getEmail(), currentEmail);
+
         String newEmail = "wakalitohernandez@gmail.com";
         String newCustomerName = "Wakalito Hernandez";
 
@@ -56,6 +59,11 @@ public class CustomerTest {
 
         assertEquals(customer.getName(), newCustomerName);
         assertEquals(customer.getEmail(), newEmail);
+
+    }
+
+    @Test
+    void testCustomerUpdateProfileThrowsDataValidationError() {
 
     }
 
