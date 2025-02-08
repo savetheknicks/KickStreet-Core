@@ -1,6 +1,9 @@
-package com.kickstreet;
+package com.kickstreet.customer;
 
 import org.junit.jupiter.api.Test;
+
+import com.kickstreet.customer.Customer;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +44,21 @@ public class CustomerTest {
         String customerEmail = customer.getEmail();
         String expectedEmail = new String("emilioperez@gmail.com");
         assertEquals(expectedEmail, customerEmail);
+    }
+
+    @Test
+    void testCustomerUpdateProfile() {
+        String currentEmail = customer.getEmail();
+        String currentCustomerName = customer.getName();
+
+        String newEmail = "wakalitohernandez@gmail.com";
+        String newCustomerName = "Wakalito Hernandez";
+
+        customer.updateProfile(newCustomerName, newEmail);
+
+        assertEquals(customer.getName(), newCustomerName);
+        assertEquals(customer.getEmail(), newEmail);
+
     }
 
 }

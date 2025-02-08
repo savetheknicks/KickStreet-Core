@@ -1,22 +1,17 @@
-package com.kickstreet;
+package com.kickstreet.customer;
 
 import java.util.UUID;
 
 public class Customer {
     
+    private static final CustomerValidator validator = new CustomerValidator();
     private String name;
     private String email;
     private String CustomerId;
 
     public Customer(String name, String email) {
 
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
-
-        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            throw new IllegalArgumentException("Invalid email format");
-        }
+        validator.validate(name, email);
 
         this.name = name;
         this.email = email;
@@ -30,4 +25,13 @@ public class Customer {
     public String getEmail() {
         return email;
     }
+
+    public void updateProfile(String customerName, String customerEmail) {
+
+        validator.validate(customerName, customerEmail);
+
+        this.name = customerName;
+        this.email = customerEmail;
+    }
 }
+
