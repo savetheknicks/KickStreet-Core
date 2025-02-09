@@ -35,22 +35,24 @@ public class CustomerTest {
         String customerName = customer.getName();
         String expectedName = new String("Emilio Perez");
         assertEquals(expectedName, customerName);
-    }
+    };
 
     @Test
     void testCustomerGeEmail() {
         String customerEmail = customer.getEmail();
         String expectedEmail = new String("emilioperez@gmail.com");
         assertEquals(expectedEmail, customerEmail);
-    }
+    };
 
     @Test
     void testCustomerUpdateProfile() {
         String currentEmail = customer.getEmail();
         String currentCustomerName = customer.getName();
+        String currentCustomerId = customer.getCustomerId();
 
         assertEquals(customer.getName(), currentCustomerName);
         assertEquals(customer.getEmail(), currentEmail);
+        assertEquals(customer.getCustomerId(), currentCustomerId);
 
         String newEmail = "wakalitohernandez@gmail.com";
         String newCustomerName = "Wakalito Hernandez";
@@ -59,12 +61,31 @@ public class CustomerTest {
 
         assertEquals(customer.getName(), newCustomerName);
         assertEquals(customer.getEmail(), newEmail);
+        assertEquals(customer.getCustomerId(), currentCustomerId);
 
-    }
+    };
 
     @Test
     void testCustomerUpdateProfileThrowsDataValidationError() {
 
-    }
+        String newEmail = "wakalitohernandez.com";
+        String newCustomerName = " ";
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            customer.updateProfile(newCustomerName, newEmail);
+        });
+
+    };
+
+    @Test
+    void testCustomerUpdateProfilePartialUpdate() {
+        String newEmail = "wakalitohernandez@gmail.com";
+        String currentCustomerName = customer.getName();
+
+        customer.updateProfile(null, newEmail);
+
+        assertEquals(customer.getName(), currentCustomerName);
+        assertEquals(customer.getEmail(), newEmail);
+    };
 
 }

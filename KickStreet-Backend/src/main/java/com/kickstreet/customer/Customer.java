@@ -7,7 +7,7 @@ public class Customer {
     private static final CustomerValidator validator = new CustomerValidator();
     private String name;
     private String email;
-    private String CustomerId;
+    private String customerId;
 
     public Customer(String name, String email) {
 
@@ -15,7 +15,7 @@ public class Customer {
 
         this.name = name;
         this.email = email;
-        this.CustomerId = UUID.randomUUID().toString();
+        this.customerId = UUID.randomUUID().toString();
     }
 
     public String getName() {
@@ -26,11 +26,20 @@ public class Customer {
         return email;
     }
 
+    public String getCustomerId() {
+        return customerId;
+    }
+
     public void updateProfile(String customerName, String customerEmail) {
 
-        validator.validate(customerName, customerEmail);
+        if (customerName != null) {
+            validator.validateName(customerName);
+            this.name = customerName;
+        }
 
-        this.name = customerName;
-        this.email = customerEmail;
+        if (customerEmail != null) {
+            validator.validateEmail(customerEmail);
+            this.email = customerEmail;
+        }
     }
 }
