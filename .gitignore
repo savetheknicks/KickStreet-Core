@@ -26,5 +26,8 @@ replay_pid*
 #VS code
 .vscode/
 
+#Mac
+.DS_Store
+
 #maven
 target/
