@@ -33,4 +33,65 @@ public class ProductTest {
         assertEquals(product.getStock(), stock);
 
     }
+
+    @Test
+    void shouldThrowExceptionWhenProductIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Product(null, "Air Jordan 1 Retro High", 180.00, 50);
+        });
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNameIsEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Product("AJR1-001", " ", 180.00, 50);
+        });
+    }
+
+    @Test
+    void shouldThrowExceptionWhenPriceIsNegative() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Product("AJR1-001", "Air Jordan 1 Retro High", -180.00, 50);
+        });
+    }
+
+    @Test
+    void shouldThrowExceptionWhenStockIsNegative() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, -50);
+        });
+    }
+
+    @Test
+    void testUpdateStockWithPositiveQuantity() {
+        int current_stock = product.getStock();
+        int increase_quantity = 100;
+        int expected_new_quantity = current_stock + increase_quantity;
+
+        product.updateStock(increase_quantity);
+
+        assertNotEquals(product.getStock(), current_stock);
+        assertEquals(product.getStock(), expected_new_quantity);
+    }
+
+    @Test
+    void testUpdateStockWithNegativeQuantity() {
+        int current_stock = product.getStock();
+        int decrease_quantity = -20;
+        int expected_new_quantity = current_stock - Math.abs(decrease_quantity);
+
+        product.updateStock(decrease_quantity);
+
+        assertNotEquals(product.getStock(), current_stock);
+        assertEquals(product.getStock(), expected_new_quantity);
+    }
+
+    @Test
+    void testUpdateWithBelowZeroNegativeQuantity() {
+        product.setStock(0);
+        assertThrows(IllegalArgumentException.class, () -> {
+            product.updateStock(-20);
+        });
+    }
+
 }
