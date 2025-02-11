@@ -94,4 +94,10 @@ public class ProductTest {
         });
     }
 
+    @Test
+    void testUpdateWithZeroQuantity() {
+        String result = product.updateStock(0);
+        assertEquals("Please provide a non zero quantity", result);
+    }
+
 }

@@ -54,13 +54,15 @@ public class Product {
         this.stock = stock;
     }
 
-    public void updateStock(int quantity) {
+    public String updateStock(int quantity) {
         if (quantity > 0) {
             increaseQuantity(quantity);
+            return "Stock updated successfully!";
         } else if (quantity < 0) {
             decreaseQuantity(quantity);
+            return "Stock updated successfully!";
         } else {
-            System.out.println("Please provide a non zero quantity.");
+            return "Please provide a non zero quantity";
         }
     }
 
