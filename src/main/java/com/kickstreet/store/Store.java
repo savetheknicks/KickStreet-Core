@@ -1,20 +1,18 @@
 package com.kickstreet.store;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
+import com.kickstreet.customer.Customer;
+import com.kickstreet.order.Order;
 import com.kickstreet.product.Product;
 
 public class Store {
 
     private HashMap<String, Product> products = new HashMap<>();
 
-    public List<Product> getProducts() {
+    public HashMap<String, Product> getProducts() {
 
-        List<Product> all_products = new ArrayList<>(products.values());
-
-        return all_products;
+        return products;
     }
 
     public void addProduct(Product product) {
@@ -30,5 +28,25 @@ public class Store {
 
         Product product = products.get(productId);
         return product.getStock() > 0;
+    }
+
+    public Order processOrder(Customer customer, String productId, int quantity) {
+
+        if (isProductInStock(productId)) {
+
+            String customerId = customer.getCustomerId();
+            Product product = products.get(productId);
+            String productName = product.getName();
+            double orderCost = product.getPrice() * quantity;
+
+            product.updateStock(-quantity);
+
+            Order processOrder = new Order(customerId, productName, orderCost);
+
+            return processOrder;
+
+        }
+
+        throw new IllegalStateException();
     }
 }

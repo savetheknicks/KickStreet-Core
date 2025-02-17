@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.kickstreet.customer.Customer;
+import com.kickstreet.order.Order;
 import com.kickstreet.product.Product;
 
 public class StoreTest {
@@ -24,7 +26,7 @@ public class StoreTest {
         @Test
         void testStoreValidInit() {
             Store store = new Store();
-            List<Product> products = store.getProducts();
+            HashMap<String, Product> products = store.getProducts();
 
             assertNotNull(products);
             assertTrue(products.isEmpty());
@@ -44,7 +46,7 @@ public class StoreTest {
             Product product = new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, 50);
             store.addProduct(product);
 
-            List<Product> products = store.getProducts();
+            HashMap<String, Product> products = store.getProducts();
 
             assertFalse(products.isEmpty());
             assertEquals(products.size(), 1);
@@ -65,7 +67,7 @@ public class StoreTest {
             store.addProduct(product4);
             store.addProduct(product5);
 
-            List<Product> products = store.getProducts();
+            HashMap<String, Product> products = store.getProducts();
 
             assertEquals(products.size(), 5);
         }
@@ -114,6 +116,43 @@ public class StoreTest {
 
                 assertFalse(store.isProductInStock(productWithoutStockId));
             }
+        }
+
+        @Nested
+        class processOrderTest {
+
+            @BeforeEach
+            void setUp() {
+
+                Product product1 = new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, 50);
+
+                store = new Store();
+
+                store.addProduct(product1);
+            }
+
+            @Test
+            void testProcessOrderForValidOrder() {
+                Customer customer1 = new Customer("Johnny Boy", "johnny.boy@gmail.com");
+                String productId = "AJR1-001";
+                String expectedProductName = "Air Jordan 1 Retro High";
+                double expectedOrderPrice = 180.00;
+                int expectedStock = 49;
+
+                Order customerOrder1 = store.processOrder(customer1, productId, 1);
+
+                assertEquals(customerOrder1.getCustomerId(), customer1.getCustomerId());
+                assertEquals(customerOrder1.getProductName(), expectedProductName);
+                assertEquals(customerOrder1.getPrice(), expectedOrderPrice);
+
+                HashMap<String, Product> current_products = store.getProducts();
+
+                Product orderedProduct = current_products.get(productId);
+
+                assertEquals(orderedProduct.getStock(), expectedStock);
+
+            }
+
         }
 
     }
