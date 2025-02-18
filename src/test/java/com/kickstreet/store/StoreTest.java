@@ -124,15 +124,16 @@ public class StoreTest {
             @BeforeEach
             void setUp() {
 
-                Product product1 = new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, 50);
-
                 store = new Store();
 
-                store.addProduct(product1);
             }
 
             @Test
             void testProcessOrderForValidOrder() {
+
+                Product product1 = new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, 50);
+                store.addProduct(product1);
+
                 Customer customer1 = new Customer("Johnny Boy", "johnny.boy@gmail.com");
                 String productId = "AJR1-001";
                 String expectedProductName = "Air Jordan 1 Retro High";
@@ -151,6 +152,58 @@ public class StoreTest {
 
                 assertEquals(orderedProduct.getStock(), expectedStock);
 
+            }
+
+            @Test
+            void testProcessOrderForOutOfStockProduct() {
+                Product product1 = new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, 0);
+                store.addProduct(product1);
+
+                Customer customer1 = new Customer("Johnny Boy", "johnny.boy@gmail.com");
+                String productId = "AJR1-001";
+
+                assertThrows(IllegalStateException.class, () -> {
+                    store.processOrder(customer1, productId, 1);
+                });
+            }
+
+            @Test
+            void testProcessOrderForNonExistentProduct() {
+                Product product1 = new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, 1);
+                store.addProduct(product1);
+
+                Customer customer1 = new Customer("Johnny Boy", "johnny.boy@gmail.com");
+                String productId = "AJR1-002";
+
+                assertThrows(IllegalStateException.class, () -> {
+                    store.processOrder(customer1, productId, 1);
+                });
+            }
+
+            @Test
+            void testProcessOrderForQuantityGreaterThanStockThrowsError() {
+                Product product1 = new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, 1);
+                store.addProduct(product1);
+
+                Customer customer1 = new Customer("Johnny Boy", "johnny.boy@gmail.com");
+                String productId = "AJR1-001";
+
+                assertThrows(IllegalArgumentException.class, () -> {
+                    store.processOrder(customer1, productId, 2);
+                });
+            }
+
+            @Test
+            void testProcessOrderForNegativeQuantityThrowsError() {
+                Product product1 = new Product("AJR1-001", "Air Jordan 1 Retro High", 180.00, 1);
+                store.addProduct(product1);
+
+                Customer customer1 = new Customer("Johnny Boy", "johnny.boy@gmail.com");
+                String productId = "AJR1-001";
+
+                assertThrows(IllegalArgumentException.class, () -> {
+                    store.processOrder(customer1, productId, -1);
+                });
             }
 
         }

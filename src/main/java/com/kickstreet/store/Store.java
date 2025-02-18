@@ -1,6 +1,7 @@
 package com.kickstreet.store;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import com.kickstreet.customer.Customer;
 import com.kickstreet.order.Order;
@@ -30,9 +31,13 @@ public class Store {
         return product.getStock() > 0;
     }
 
+    private Boolean isProductAvailable(String productId) {
+        return Objects.nonNull(products.get(productId));
+    }
+
     public Order processOrder(Customer customer, String productId, int quantity) {
 
-        if (isProductInStock(productId)) {
+        if (isProductAvailable(productId) && isProductInStock(productId)) {
 
             String customerId = customer.getCustomerId();
             Product product = products.get(productId);
@@ -41,12 +46,13 @@ public class Store {
 
             product.updateStock(-quantity);
 
-            Order processOrder = new Order(customerId, productName, orderCost);
+            Order processedOrder = new Order(customerId, productName, orderCost);
 
-            return processOrder;
+            return processedOrder;
 
         }
 
         throw new IllegalStateException();
     }
+
 }
