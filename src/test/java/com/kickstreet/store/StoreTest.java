@@ -175,7 +175,7 @@ public class StoreTest {
                 Customer customer1 = new Customer("Johnny Boy", "johnny.boy@gmail.com");
                 String productId = "AJR1-002";
 
-                assertThrows(IllegalStateException.class, () -> {
+                assertThrows(IllegalArgumentException.class, () -> {
                     store.processOrder(customer1, productId, 1);
                 });
             }

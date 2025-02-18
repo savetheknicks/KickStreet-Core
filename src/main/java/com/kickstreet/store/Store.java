@@ -1,7 +1,6 @@
 package com.kickstreet.store;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 import com.kickstreet.customer.Customer;
 import com.kickstreet.order.Order;
@@ -31,28 +30,27 @@ public class Store {
         return product.getStock() > 0;
     }
 
-    private Boolean isProductAvailable(String productId) {
-        return Objects.nonNull(products.get(productId));
-    }
-
     public Order processOrder(Customer customer, String productId, int quantity) {
 
-        if (isProductAvailable(productId) && isProductInStock(productId)) {
-
-            String customerId = customer.getCustomerId();
-            Product product = products.get(productId);
-            String productName = product.getName();
-            double orderCost = product.getPrice() * quantity;
-
-            product.updateStock(-quantity);
-
-            Order processedOrder = new Order(customerId, productName, orderCost);
-
-            return processedOrder;
-
+        if (!products.containsKey(productId)) {
+            throw new IllegalArgumentException("Product with ID " + productId + " does not exist.");
         }
 
-        throw new IllegalStateException();
+        if (!isProductInStock(productId)) {
+            throw new IllegalStateException("Not enough stock available for product: " + productId);
+        }
+
+        String customerId = customer.getCustomerId();
+        Product product = products.get(productId);
+        String productName = product.getName();
+        double orderCost = product.getPrice() * quantity;
+
+        product.updateStock(-quantity);
+
+        Order processedOrder = new Order(customerId, productName, orderCost);
+
+        return processedOrder;
+
     }
 
 }
